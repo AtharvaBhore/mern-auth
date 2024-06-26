@@ -11,6 +11,10 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.use("/users", userRoutes)
 
+app.use("/gg", (req,res)=>{
+    res.send('gg');
+})
+
 app.listen(process.env.PORT,()=>{
     console.log("Listening...")
 });
