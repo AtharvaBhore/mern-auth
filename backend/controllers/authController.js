@@ -2,7 +2,7 @@ import * as db from "../db/index.js"
 import { v4 as uuidv4 } from 'uuid';
 import bcryptjs from "bcryptjs/dist/bcrypt.js";
 
-const signup = async (req,res) => {
+const signup = async (req,res,next) => {
 	const {email,password,username} = req.body;
 	const hashedPassword = bcryptjs.hashSync(password,10)
 	const userID = uuidv4()
@@ -17,7 +17,7 @@ const signup = async (req,res) => {
 		console.log(respo.rows[0])
 		res.status(200).json({msg:"Success"})
 	} catch (err) {
-		console.log(err)
+		next(err);
 	}
 }
 
