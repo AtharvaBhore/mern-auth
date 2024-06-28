@@ -18,7 +18,7 @@ export default function Signup() {
       setLoading(true);
       setError(false);
       e.preventDefault();
-      const res = await fetch('/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+      const res = await fetch('http://localhost:3000/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
       const data = await res.json();
       console.log(data);
       setLoading(false);

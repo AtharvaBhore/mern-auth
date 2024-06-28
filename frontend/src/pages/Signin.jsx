@@ -3,6 +3,7 @@ import { Link,useNavigate } from "react-router-dom"
 import {signInFailure,signInSuccess,signInStart} from "../redux/user/userSlice.js"
 import { useDispatch, useSelector } from "react-redux";
 
+
 export default function Signin() {
 
   const [formData,setFormData] = useState({});
@@ -19,7 +20,7 @@ export default function Signin() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch('/auth/signin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+      const res = await fetch('http://localhost:3000/auth/signin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
       const data = await res.json();
       if(data.success===false){
         dispatch(signInFailure(data.message))
