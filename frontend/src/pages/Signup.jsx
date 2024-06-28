@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link,useNavigate } from "react-router-dom"
+import OAuth from "../components/OAuth";
 
 export default function Signup() {
 
@@ -18,9 +19,9 @@ export default function Signup() {
       setLoading(true);
       setError(false);
       e.preventDefault();
-      const res = await fetch('http://localhost:3000/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+      const backendPort = import.meta.env.VITE_PORT;
+      const res = await fetch(`http://localhost:${backendPort}/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
       const data = await res.json();
-      console.log(data);
       setLoading(false);
       if(data.success===false){
         setError(true);
@@ -43,6 +44,7 @@ export default function Signup() {
         <input onChange={handleChange} type="password" name="password" id="password" placeholder="Password" className="bg-slate-100 p-3 rounded-lg" />
         <input onChange={handleChange} type="email" name="email" id="email" placeholder="Email" className="bg-slate-100 p-3 rounded-lg" />
         <button disabled = {loading} className="disabled:opacity-80 hover:opacity-95 bg-slate-700 uppercase text-white p-3 rounded-lg">{loading?'Loading...':'Sign Up'}</button>
+        <OAuth/>
       </form>
       <div className="mt-5 gap-2 flex">
         <p>Have an account?</p>

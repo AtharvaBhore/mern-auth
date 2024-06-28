@@ -16,7 +16,6 @@ const signup = async (req,res,next) => {
 	]
 	try {
 		const respo = await db.query(text,values)
-		console.log(respo.rows[0])
 		res.status(200).json({msg:"Success"})
 	} catch (err) {
 		next(err);
@@ -51,4 +50,48 @@ const signin = async (req,res,next) => {
  
 }
 
-export {signup,signin}
+const google = async(req,res,next)=>{
+
+	const email = req.body.email;
+	const text = "SELECT * FROM users WHERE email = $1;";
+	const values = [
+		email
+	]
+
+	try {
+		
+		const {rows} =  await db.query(text,values);
+		if(rows[0]){
+			const token = jwt.sign({id:rows[0].id},process.env.JWT_SECRET);
+			const {password:hashedPassword,...rest} = rows[0]
+			const expiryDate = new Date(Date.now()+3600000)
+			res.cookie('access_token',token,{httpOnly:true,expires:expiryDate}).status(200).json(rest);
+		}else{
+			const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+			const hPassword = bcryptjs.hashSync(generatedPassword,10);
+			const username = req.body.name.split(' ').join('').toLowerCase()+Math.floor(Math.random()*10000).toString();
+			const email = req.body.email;
+			const profilePhoto = req.body.photo;
+			const password=hPassword;
+			const userID = uuidv4()
+			const text = "INSERT INTO users( email, password,username,profileimage) VALUES ($1,$2,$3,$4);"
+			const values = [
+				email,
+				password,
+				username,
+				profilePhoto,
+			]
+			const respo = await db.query(text,values)
+			const token = jwt.sign({id:respo[0].id},process.env.JWT_SECRET);
+			const {password:hashedPassword,...rest} = respo[0]
+			const expiryDate = new Date(Date.now()+3600000)
+			res.cookie('access_token',token,{httpOnly:true,expires:expiryDate}).status(200).json(rest);
+		}
+
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+
+export {signup,signin,google}
