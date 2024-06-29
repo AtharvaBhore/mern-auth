@@ -56,7 +56,7 @@ export default function Profile() {
       <form className="flex flex-col gap-4">
 
         <input type="file" ref={fileRef} hidden accept='image/*' onChange={(e)=>setImage(e.target.files[0])}/>
-        <img onClick={()=>fileRef.current.click()} src={currentUser.profileimage} alt="profileimage" className="cursor-pointer h-24 w-24 self-center object-cover rounded-full mt-2"/>
+        <img onClick={()=>fileRef.current.click()} src={formData.profilePicture || currentUser.profileimage} alt="profileimage" className="cursor-pointer h-24 w-24 self-center object-cover rounded-full mt-2"/>
        
         <p className="text-sm self-center">
           {
