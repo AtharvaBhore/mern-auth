@@ -4,10 +4,14 @@ import dotenv from "dotenv"
 import { userRoutes} from "./routes/userRoutes.js"
 import { authRoutes} from "./routes/authRoutes.js"
 import cookieParser from "cookie-parser"
+import path from 'path'
 //import cors from "cors"
+
+const __dirname = path.resolve();
 
 const app = express()
 
+app.use(express.static(path.join(__dirname,'/frontend/dist')))
 app.use(bodyParser.json())
 app.use(cookieParser())
 //app.use(bodyParser.urlencoded({extended: true}))
@@ -18,6 +22,10 @@ app.use(cookieParser())
     credentials: true,
     optionsSuccessStatus: 204 // For legacy browser support
   }));*/
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'frontend','dist','index.html'));
+})
 
 app.use("/users", userRoutes)
 
