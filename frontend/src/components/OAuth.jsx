@@ -2,17 +2,19 @@ import {GoogleAuthProvider,signInWithPopup,getAuth} from "@firebase/auth"
 import {app} from '../firebase.js'
 import {useDispatch} from 'react-redux'
 import {signInSuccess} from "../redux/user/userSlice.js"
+import {useNavigate} from "react-router-dom"
 
 export default function OAuth() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleGoogleClick = async ()=>{
 
         try {
             const provider = new GoogleAuthProvider();
             const auth = getAuth(app);
             const result = await signInWithPopup(auth,provider);
-            const backendPort = import.meta.env.VITE_PORT
-            const res = await fetch(`http://localhost:${backendPort}/auth/google`,{
+            //const backendPort = import.meta.env.VITE_PORT
+            const res = await fetch(`/auth/google`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
@@ -25,8 +27,8 @@ export default function OAuth() {
                 })
             })
             const data = await res.json();
-            console.log(data)
             dispatch(signInSuccess(data))
+            navigate('/')
         } catch (error) {
             console.log("Could not login with Google",error);
         }

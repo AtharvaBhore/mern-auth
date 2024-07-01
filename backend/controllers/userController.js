@@ -13,13 +13,15 @@ const getUsers = async (req,res) => {
 
 const updateUser = async (req,res,next) => {
 
+	console.log('gg');
+
 	const id = req.params.id;
 	const text = "SELECT * FROM users WHERE id = $1;";
 	const values = [
 		id
 	]
 
-	if (req.user.id !== req.params.id){
+	if (req.user.id != req.params.id){
 		return next(errorHandler(401,'You can update only your account!'))
 	}
 

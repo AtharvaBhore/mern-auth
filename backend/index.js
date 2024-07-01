@@ -4,20 +4,20 @@ import dotenv from "dotenv"
 import { userRoutes} from "./routes/userRoutes.js"
 import { authRoutes} from "./routes/authRoutes.js"
 import cookieParser from "cookie-parser"
-import cors from "cors"
+//import cors from "cors"
 
 const app = express()
 
 app.use(bodyParser.json())
 app.use(cookieParser())
 //app.use(bodyParser.urlencoded({extended: true}))
-app.use(cors({
+/*app.use(cors({
     origin: 'http://localhost:5173', // Replace with your client's domain
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     optionsSuccessStatus: 204 // For legacy browser support
-  }));
+  }));*/
 
 app.use("/users", userRoutes)
 

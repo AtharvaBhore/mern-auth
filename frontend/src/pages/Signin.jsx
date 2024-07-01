@@ -21,8 +21,8 @@ export default function Signin() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const backendPort = import.meta.env.VITE_PORT
-      const res = await fetch(`http://localhost:${backendPort}/auth/signin`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+      //const backendPort = import.meta.env.VITE_PORT
+      const res = await fetch(`/auth/signin`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
       const data = await res.json();
       if(data.success===false){
         dispatch(signInFailure(data.message))

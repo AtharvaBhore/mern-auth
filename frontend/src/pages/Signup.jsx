@@ -19,8 +19,8 @@ export default function Signup() {
       setLoading(true);
       setError(false);
       e.preventDefault();
-      const backendPort = import.meta.env.VITE_PORT;
-      const res = await fetch(`http://localhost:${backendPort}/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+      //const backendPort = import.meta.env.VITE_PORT;
+      const res = await fetch(`/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
       const data = await res.json();
       setLoading(false);
       if(data.success===false){
