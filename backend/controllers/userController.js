@@ -13,8 +13,6 @@ const getUsers = async (req,res) => {
 
 const updateUser = async (req,res,next) => {
 
-	console.log('gg');
-
 	const id = req.params.id;
 	const text = "SELECT * FROM users WHERE id = $1;";
 	const values = [
@@ -52,4 +50,28 @@ const updateUser = async (req,res,next) => {
 
 }
 
-export {getUsers,updateUser}
+const deleteUser = async(req,res,next)=>{
+
+	if (req.user.id != req.params.id){
+		return next(errorHandler(401,'You can delete only your account!'))
+	}
+
+	try {
+
+		const id = req.params.id;
+		const text = "DELETE FROM users WHERE id = $1;";
+		const values = [
+			id
+		]
+
+		let {rows} =  await db.query(text,values);
+		res.status(200).json('User has been deleted...')
+
+		
+	} catch (error) {
+		next(error)
+	}
+
+}
+
+export {getUsers,updateUser,deleteUser}
